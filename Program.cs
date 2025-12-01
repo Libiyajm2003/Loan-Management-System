@@ -69,7 +69,15 @@ namespace Loan_Management_System
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             var app = builder.Build();
 
             // ===== Middleware =====
@@ -80,8 +88,11 @@ namespace Loan_Management_System
             }
 
             app.UseRouting();
+            app.UseCors("MyPolicy");
             app.UseAuthentication();  // important: before UseAuthorization
             app.UseAuthorization();
+            app.MapIdentityApi<IdentityUser>();
+
 
             app.MapControllers();
 
