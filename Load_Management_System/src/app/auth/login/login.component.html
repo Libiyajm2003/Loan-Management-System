@@ -1,0 +1,17 @@
+<div class="login-container">
+  <h2>Loan Management System - Login</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <label>Email</label>
+    <input type="email" [(ngModel)]="model.email" name="email" required />
+
+    <label>Password</label>
+    <input type="password" [(ngModel)]="model.password" name="password" required />
+
+    <button type="submit">Login</button>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+  </form>
+</div>
+
+
