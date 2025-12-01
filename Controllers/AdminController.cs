@@ -1,12 +1,8 @@
-﻿using Loan_Management_System.Database;
-using Loan_Management_System.Models;
+﻿using Loan_Management_System.Models;
+using Loan_Management_System.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Loan_Management_System.Controllers
 {
@@ -15,168 +11,204 @@ namespace Loan_Management_System.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICustomerRepository _customerRepo;
+        private readonly ILoanOfficerRepository _officerRepo;
+        private readonly ILoanRepository _loanRepo;
+        private readonly IBackgroundVerificationRepository _bgRepo;
+        private readonly ILoanVerificationRepository _loanVerRepo;
+        private readonly IHelpReportRepository _helpRepo;
+        private readonly IFeedbackRepository _feedbackRepo;
 
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminController(
+            ICustomerRepository customerRepo,
+            ILoanOfficerRepository officerRepo,
+            ILoanRepository loanRepo,
+            IBackgroundVerificationRepository bgRepo,
+            ILoanVerificationRepository loanVerRepo,
+            IHelpReportRepository helpRepo,
+            IFeedbackRepository feedbackRepo)
         {
-            _context = context;
-            _userManager = userManager;
+            _customerRepo = customerRepo;
+            _officerRepo = officerRepo;
+            _loanRepo = loanRepo;
+            _bgRepo = bgRepo;
+            _loanVerRepo = loanVerRepo;
+            _helpRepo = helpRepo;
+            _feedbackRepo = feedbackRepo;
         }
 
-        [HttpPost("approve-customer/{userId}")]
-        public async Task<IActionResult> ApproveCustomer(string userId)
+        #region Customer Management
+        [HttpGet("customers")]
+        public async Task<IActionResult> GetAllCustomers()
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound(new { Message = "User not found" });
+            var customers = await _customerRepo.GetAllAsync();
+            return Ok(customers);
+        }
 
-            var existing = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == userId);
-            if (existing == null)
-            {
-                var customer = new Customer
-                {
-                    ApplicationUserId = userId,
-                    Address = "Default Address",   // Required field
-                    Aadhaar = "123456789012",      // Required field
-                    PAN = "ABCDE1234F"             // Optional, can be dummy
-                };
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
-            }
-
+        [HttpPut("customers/{id}/approve")]
+        public async Task<IActionResult> ApproveCustomer(int id)
+        {
+            var result = await _customerRepo.ApproveCustomerAsync(id);
+            if (!result) return NotFound("Customer not found");
             return Ok(new { Message = "Customer approved" });
         }
 
-        // Reject a customer
-        [HttpPost("reject-customer/{userId}")]
-        public async Task<IActionResult> RejectCustomer(string userId)
+        [HttpPut("customers/{id}/reject")]
+        public async Task<IActionResult> RejectCustomer(int id)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == userId);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
-            }
+            var result = await _customerRepo.RejectCustomerAsync(id);
+            if (!result) return NotFound("Customer not found");
             return Ok(new { Message = "Customer rejected" });
         }
+        #endregion
 
-        // Approve a loan officer
-        [HttpPost("approve-officer/{userId}")]
-        public async Task<IActionResult> ApproveOfficer(string userId)
+        #region Loan Officer Management
+        [HttpGet("loan-officers")]
+        public async Task<IActionResult> GetAllLoanOfficers()
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound(new { Message = "User not found" });
-
-            var existing = await _context.LoanOfficers.FirstOrDefaultAsync(o => o.ApplicationUserId == userId);
-            if (existing == null)
-            {
-                var officer = new LoanOfficer
-                {
-                    ApplicationUserId = userId,
-                    Region = "",
-                    IsApproved = true
-                };
-                _context.LoanOfficers.Add(officer);
-            }
-            else
-            {
-                existing.IsApproved = true;
-            }
-
-            await _context.SaveChangesAsync();
-            return Ok(new { Message = "Officer approved" });
+            var officers = await _officerRepo.GetAllAsync();
+            return Ok(officers);
         }
 
-        // Reject a loan officer
-        [HttpPost("reject-officer/{userId}")]
-        public async Task<IActionResult> RejectOfficer(string userId)
+        [HttpPut("loan-officers/{id}/approve")]
+        public async Task<IActionResult> ApproveLoanOfficer(int id)
         {
-            var officer = await _context.LoanOfficers.FirstOrDefaultAsync(o => o.ApplicationUserId == userId);
-            if (officer != null)
-            {
-                _context.LoanOfficers.Remove(officer);
-                await _context.SaveChangesAsync();
-            }
-            return Ok(new { Message = "Officer rejected" });
+            var result = await _officerRepo.ApproveLoanOfficerAsync(id);
+            if (!result) return NotFound("Loan officer not found");
+            return Ok(new { Message = "Loan officer approved" });
         }
 
-        // View all loan requests
-        [HttpGet("loan-requests")]
-        public async Task<IActionResult> GetLoanRequests()
+        [HttpPut("loan-officers/{id}/reject")]
+        public async Task<IActionResult> RejectLoanOfficer(int id)
         {
-            var loans = await _context.LoanRequests
-                .Include(l => l.Customer)
-                .Include(l => l.AssignedOfficer)
-                .ToListAsync();
+            var result = await _officerRepo.RejectLoanOfficerAsync(id);
+            if (!result) return NotFound("Loan officer not found");
+            return Ok(new { Message = "Loan officer rejected" });
+        }
 
+        [HttpPost("loan-officers/assign-bg/{verificationId:int}/{officerId:int}")]
+        public async Task<IActionResult> AssignOfficerForBackgroundVerification(int verificationId, int officerId)
+        {
+            var result = await _bgRepo.AssignOfficerAsync(verificationId, officerId);
+            if (!result) return NotFound("Loan request or officer not found");
+            return Ok(new { Message = "Officer assigned for background verification" });
+        }
+
+        [HttpPost("loan-officers/assign-loan-verification/{verificationId:int}/{officerId:int}")]
+        public async Task<IActionResult> AssignOfficerForLoanVerification(int verificationId, int officerId)
+        {
+            var result = await _loanVerRepo.AssignOfficerAsync(verificationId, officerId);
+            if (!result) return NotFound("Loan request or officer not found");
+            return Ok(new { Message = "Officer assigned for loan verification" });
+        }
+        #endregion
+
+        #region Loan Requests
+        [HttpGet("loans")]
+        public async Task<IActionResult> GetAllLoanRequests()
+        {
+            var loans = await _loanRepo.GetAllAsync();
             return Ok(loans);
         }
+        #endregion
 
-        // Assign officer to loan request
-        [HttpPost("assign-officer/{loanRequestId}/{officerId}")]
-        public async Task<IActionResult> AssignOfficer(int loanRequestId, int officerId)
+        #region Background Verification
+        [HttpGet("background-verifications")]
+        public async Task<IActionResult> GetBackgroundVerifications()
         {
-            var loan = await _context.LoanRequests.FindAsync(loanRequestId);
-            if (loan == null) return NotFound(new { Message = "Loan request not found" });
-
-            loan.AssignedOfficerId = officerId;
-            loan.Status = LoanStatus.UnderVerification;
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "Officer assigned successfully" });
+            var list = await _bgRepo.GetAllAsync();
+            return Ok(list);
         }
 
-        // CRUD for Help Reports
+        [HttpPut("background-verifications/{id}")]
+        public async Task<IActionResult> UpdateBackgroundVerification(int id, [FromBody] BackgroundVerification model)
+        {
+            var result = await _bgRepo.UpdateAsync(id, model);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Updated successfully" });
+        }
+
+        [HttpDelete("background-verifications/{id}")]
+        public async Task<IActionResult> DeleteBackgroundVerification(int id)
+        {
+            var result = await _bgRepo.DeleteAsync(id);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Deleted successfully" });
+        }
+        #endregion
+
+        #region Loan Verification
+        [HttpGet("loan-verifications")]
+        public async Task<IActionResult> GetLoanVerifications()
+        {
+            var list = await _loanVerRepo.GetAllAsync();
+            return Ok(list);
+        }
+
+        [HttpPut("loan-verifications/{id}")]
+        public async Task<IActionResult> UpdateLoanVerification(int id, [FromBody] LoanVerification model)
+        {
+            var result = await _loanVerRepo.UpdateAsync(id, model);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Updated successfully" });
+        }
+
+        [HttpDelete("loan-verifications/{id}")]
+        public async Task<IActionResult> DeleteLoanVerification(int id)
+        {
+            var result = await _loanVerRepo.DeleteAsync(id);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Deleted successfully" });
+        }
+        #endregion
+
+        #region Help Report
         [HttpGet("help-reports")]
         public async Task<IActionResult> GetHelpReports()
         {
-            var reports = await _context.HelpReports.ToListAsync();
+            var reports = await _helpRepo.GetAllAsync();
             return Ok(reports);
-        }
-
-        [HttpPost("help-reports")]
-        public async Task<IActionResult> CreateHelpReport([FromBody] HelpReport model)
-        {
-            _context.HelpReports.Add(model);
-            await _context.SaveChangesAsync();
-            return Ok(model);
         }
 
         [HttpPut("help-reports/{id}")]
         public async Task<IActionResult> UpdateHelpReport(int id, [FromBody] HelpReport model)
         {
-            var report = await _context.HelpReports.FindAsync(id);
-            if (report == null) return NotFound(new { Message = "Report not found" });
-
-            report.Title = model.Title;
-            report.Description = model.Description;
-            await _context.SaveChangesAsync();
-
-            return Ok(report);
+            model.Id = id;
+            var result = await _helpRepo.UpdateAsync(model);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Updated successfully" });
         }
+        #endregion
 
-        [HttpDelete("help-reports/{id}")]
-        public async Task<IActionResult> DeleteHelpReport(int id)
+        #region Feedback
+        [HttpPost("feedback-questions")]
+        public async Task<IActionResult> AddFeedbackQuestion([FromBody] FeedbackQuestion model)
         {
-            var report = await _context.HelpReports.FindAsync(id);
-            if (report == null) return NotFound(new { Message = "Report not found" });
-
-            _context.HelpReports.Remove(report);
-            await _context.SaveChangesAsync();
-            return Ok(new { Message = "Help report deleted" });
+            await _feedbackRepo.AddQuestionAsync(model);
+            return Ok(new { Message = "Feedback question added" });
         }
 
-        // View customer feedback
+        [HttpGet("feedback-questions")]
+        public async Task<IActionResult> GetFeedbackQuestions()
+        {
+            var questions = await _feedbackRepo.GetQuestionsAsync();
+            return Ok(questions);
+        }
+
+        [HttpPut("feedback-questions/{id}")]
+        public async Task<IActionResult> UpdateFeedbackQuestion(int id, [FromBody] FeedbackQuestion model)
+        {
+            var result = await _feedbackRepo.UpdateQuestionAsync(id, model);
+            if (!result) return NotFound("Not found");
+            return Ok(new { Message = "Updated successfully" });
+        }
+
         [HttpGet("customer-feedback")]
         public async Task<IActionResult> GetCustomerFeedback()
         {
-            var feedbacks = await _context.Feedbacks
-                .Include(f => f.Customer)
-                .ToListAsync();
-
-            return Ok(feedbacks);
+            var feedback = await _feedbackRepo.GetCustomerFeedbackAsync();
+            return Ok(feedback);
         }
+        #endregion
     }
 }

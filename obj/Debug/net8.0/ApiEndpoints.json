@@ -1,51 +1,45 @@
 [
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "ApproveCustomer",
-    "RelativePath": "api/Admin/approve-customer/{userId}",
-    "HttpMethod": "POST",
+    "Method": "GetBackgroundVerifications",
+    "RelativePath": "api/Admin/background-verifications",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "ApproveOfficer",
-    "RelativePath": "api/Admin/approve-officer/{userId}",
-    "HttpMethod": "POST",
+    "Method": "UpdateBackgroundVerification",
+    "RelativePath": "api/Admin/background-verifications/{id}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "AssignOfficer",
-    "RelativePath": "api/Admin/assign-officer/{loanRequestId}/{officerId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loanRequestId",
+        "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
       },
       {
-        "Name": "officerId",
+        "Name": "model",
+        "Type": "Loan_Management_System.Models.BackgroundVerification",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "DeleteBackgroundVerification",
+    "RelativePath": "api/Admin/background-verifications/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -64,8 +58,8 @@
   },
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "GetHelpReports",
-    "RelativePath": "api/Admin/help-reports",
+    "Method": "GetAllCustomers",
+    "RelativePath": "api/Admin/customers",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -74,18 +68,91 @@
   },
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "CreateHelpReport",
-    "RelativePath": "api/Admin/help-reports",
+    "Method": "ApproveCustomer",
+    "RelativePath": "api/Admin/customers/{id}/approve",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "RejectCustomer",
+    "RelativePath": "api/Admin/customers/{id}/reject",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "AddFeedbackQuestion",
+    "RelativePath": "api/Admin/feedback-questions",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "model",
-        "Type": "Loan_Management_System.Models.HelpReport",
+        "Type": "Loan_Management_System.Models.FeedbackQuestion",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "GetFeedbackQuestions",
+    "RelativePath": "api/Admin/feedback-questions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "UpdateFeedbackQuestion",
+    "RelativePath": "api/Admin/feedback-questions/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "Loan_Management_System.Models.FeedbackQuestion",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "GetHelpReports",
+    "RelativePath": "api/Admin/help-reports",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -103,7 +170,7 @@
       },
       {
         "Name": "model",
-        "Type": "Loan_Management_System.Models.HelpReport",
+        "Type": "HelpReport",
         "IsRequired": true
       }
     ],
@@ -111,8 +178,123 @@
   },
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "DeleteHelpReport",
-    "RelativePath": "api/Admin/help-reports/{id}",
+    "Method": "GetAllLoanOfficers",
+    "RelativePath": "api/Admin/loan-officers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "ApproveLoanOfficer",
+    "RelativePath": "api/Admin/loan-officers/{id}/approve",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "RejectLoanOfficer",
+    "RelativePath": "api/Admin/loan-officers/{id}/reject",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "AssignOfficerForBackgroundVerification",
+    "RelativePath": "api/Admin/loan-officers/assign-bg/{verificationId}/{officerId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "verificationId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "officerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "AssignOfficerForLoanVerification",
+    "RelativePath": "api/Admin/loan-officers/assign-loan-verification/{verificationId}/{officerId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "verificationId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "officerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "GetLoanVerifications",
+    "RelativePath": "api/Admin/loan-verifications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "UpdateLoanVerification",
+    "RelativePath": "api/Admin/loan-verifications/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "LoanVerification",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Loan_Management_System.Controllers.AdminController",
+    "Method": "DeleteLoanVerification",
+    "RelativePath": "api/Admin/loan-verifications/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -127,44 +309,12 @@
   },
   {
     "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "GetLoanRequests",
-    "RelativePath": "api/Admin/loan-requests",
+    "Method": "GetAllLoanRequests",
+    "RelativePath": "api/Admin/loans",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "RejectCustomer",
-    "RelativePath": "api/Admin/reject-customer/{userId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Loan_Management_System.Controllers.AdminController",
-    "Method": "RejectOfficer",
-    "RelativePath": "api/Admin/reject-officer/{userId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
     "ReturnTypes": []
   },
   {
@@ -271,7 +421,7 @@
       },
       {
         "Name": "model",
-        "Type": "Loan_Management_System.Models.LoanVerification",
+        "Type": "LoanVerification",
         "IsRequired": true
       }
     ],

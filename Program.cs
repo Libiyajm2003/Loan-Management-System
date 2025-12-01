@@ -59,6 +59,11 @@ namespace Loan_Management_System
             builder.Services.AddScoped<IOfficerRepository, OfficerRepository>();
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();  // <-- Add this
             builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+            builder.Services.AddScoped<ILoanOfficerRepository, LoanOfficerRepository>();
+            builder.Services.AddScoped<IBackgroundVerificationRepository, BackgroundVerificationRepository>();
+            builder.Services.AddScoped<ILoanVerificationRepository, LoanVerificationRepository>();
+            builder.Services.AddScoped<IHelpReportRepository, HelpReportRepository>();
+            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
             // ===== Controllers & Swagger =====
             builder.Services.AddControllers();

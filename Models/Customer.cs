@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
 
 namespace Loan_Management_System.Models
 {
@@ -10,21 +9,19 @@ namespace Loan_Management_System.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        // Foreign key to ApplicationUser
         public string ApplicationUserId { get; set; }
-
         [ForeignKey("ApplicationUserId")]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
 
-        [Required]
-        public string Address { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
 
-        // Make PAN and Aadhaar nullable to avoid insertion errors
-        public string? PAN { get; set; }
-        public string? Aadhaar { get; set; }
+        // For Admin approval/rejection
+        public bool IsApproved { get; set; } = false;
 
-        // Navigation properties
-        public ICollection<LoanRequest> LoanRequests { get; set; } = new List<LoanRequest>();
-        public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+        // Navigation
+        public virtual ICollection<LoanRequest>? LoanRequests { get; set; }
+        public virtual ICollection<CustomerFeedback>? CustomerFeedbacks { get; set; }
     }
 }

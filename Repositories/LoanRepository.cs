@@ -1,45 +1,35 @@
 ﻿using Loan_Management_System.Database;
 using Loan_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
-
 
 namespace Loan_Management_System.Repositories
 {
     public class LoanRepository : ILoanRepository
     {
         private readonly ApplicationDbContext _context;
+        public LoanRepository(ApplicationDbContext context) => _context = context;
 
-        public LoanRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public async Task<IEnumerable<LoanRequest>> GetAllAsync() =>
+            await _context.LoanRequests.Include(l => l.Customer).Include(l => l.AssignedOfficer).ToListAsync();
 
-        public async Task<LoanRequest> ApplyLoanAsync(LoanRequest loan)
+        public async Task<LoanRequest?> GetByIdAsync(int id) =>
+            await _context.LoanRequests.Include(l => l.Customer).Include(l => l.AssignedOfficer).FirstOrDefaultAsync(l => l.Id == id);
+
+        public async Task AssignLoanOfficerAsync(int loanRequestId, int officerId)
         {
-            _context.LoanRequests.Add(loan);
+            var loan = await _context.LoanRequests.FindAsync(loanRequestId);
+            if (loan == null) return;
+            loan.AssignedOfficerId = officerId;
             await _context.SaveChangesAsync();
-            return loan;
         }
 
-        public async Task<IEnumerable<LoanRequest>> GetLoansAsync()
+        public async Task<LoanRequest> ApplyLoanAsync(LoanRequest loanRequest)
         {
-            return await _context.LoanRequests
-                .Include(l => l.Customer)
-                .ToListAsync();
-        }
-
-        public async Task<LoanRequest> GetLoanByIdAsync(int id)
-        {
-            return await _context.LoanRequests.FindAsync(id);
-        }
-
-        public async Task<LoanRequest> UpdateLoanAsync(LoanRequest loan)
-        {
-            _context.LoanRequests.Update(loan);
+            _context.LoanRequests.Add(loanRequest);
             await _context.SaveChangesAsync();
-            return loan;
+            return loanRequest;
         }
     }
 }

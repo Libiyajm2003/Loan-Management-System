@@ -142,7 +142,6 @@ E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\st
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\staticwebassets.build.json.cache
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\staticwebassets.development.json
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\Loan Man.9C7CEFFC.Up2Date
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\Loan Management System.dll
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\refint\Loan Management System.dll
@@ -150,3 +149,5 @@ E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\Lo
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\Loan Management System.genruntimeconfig.cache
 E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\ref\Loan Management System.dll
 E:\DemoMay2025\Loan Management System\Loan Management System\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\Loan Management System.sourcelink.json
+E:\DemoMay2025\Loan Management System\Loan Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

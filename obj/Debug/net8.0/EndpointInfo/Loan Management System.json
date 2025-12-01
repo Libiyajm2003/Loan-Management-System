@@ -5,95 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Admin/approve-customer/{userId}": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Admin/reject-customer/{userId}": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Admin/approve-officer/{userId}": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Admin/reject-officer/{userId}": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Admin/loan-requests": {
+    "/api/Admin/customers": {
       "get": {
         "tags": [
           "Admin"
@@ -105,14 +17,118 @@
         }
       }
     },
-    "/api/Admin/assign-officer/{loanRequestId}/{officerId}": {
+    "/api/Admin/customers/{id}/approve": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/customers/{id}/reject": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-officers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-officers/{id}/approve": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-officers/{id}/reject": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-officers/assign-bg/{verificationId}/{officerId}": {
       "post": {
         "tags": [
           "Admin"
         ],
         "parameters": [
           {
-            "name": "loanRequestId",
+            "name": "verificationId",
             "in": "path",
             "required": true,
             "schema": {
@@ -137,7 +153,39 @@
         }
       }
     },
-    "/api/Admin/help-reports": {
+    "/api/Admin/loan-officers/assign-loan-verification/{verificationId}/{officerId}": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "verificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "officerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loans": {
       "get": {
         "tags": [
           "Admin"
@@ -147,30 +195,163 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
+      }
+    },
+    "/api/Admin/background-verifications": {
+      "get": {
         "tags": [
           "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/background-verifications/{id}": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/HelpReport"
+                "$ref": "#/components/schemas/BackgroundVerification"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/HelpReport"
+                "$ref": "#/components/schemas/BackgroundVerification"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/HelpReport"
+                "$ref": "#/components/schemas/BackgroundVerification"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-verifications": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/loan-verifications/{id}": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanVerification"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanVerification"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanVerification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/help-reports": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -218,8 +399,51 @@
             "description": "OK"
           }
         }
+      }
+    },
+    "/api/Admin/feedback-questions": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       },
-      "delete": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/feedback-questions/{id}": {
+      "put": {
         "tags": [
           "Admin"
         ],
@@ -234,6 +458,25 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackQuestion"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -457,7 +700,92 @@
   },
   "components": {
     "schemas": {
+      "ApplicationUser": {
+        "required": [
+          "fullName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "normalizedUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "normalizedEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailConfirmed": {
+            "type": "boolean"
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityStamp": {
+            "type": "string",
+            "nullable": true
+          },
+          "concurrencyStamp": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumberConfirmed": {
+            "type": "boolean"
+          },
+          "twoFactorEnabled": {
+            "type": "boolean"
+          },
+          "lockoutEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lockoutEnabled": {
+            "type": "boolean"
+          },
+          "accessFailedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "role": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          },
+          "customerProfile": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "officerProfile": {
+            "$ref": "#/components/schemas/LoanOfficer"
+          }
+        },
+        "additionalProperties": false
+      },
       "BackgroundVerification": {
+        "required": [
+          "details"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -471,12 +799,144 @@
           "loanRequest": {
             "$ref": "#/components/schemas/LoanRequest"
           },
+          "assignedOfficerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "assignedOfficer": {
+            "$ref": "#/components/schemas/LoanOfficer"
+          },
           "details": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "remarks": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "applicationUserId": {
             "type": "string",
             "nullable": true
           },
-          "status": {
+          "user": {
+            "$ref": "#/components/schemas/ApplicationUser"
+          },
+          "name": {
             "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "loanRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanRequest"
+            },
+            "nullable": true
+          },
+          "customerFeedbacks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerFeedback"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerFeedback": {
+        "required": [
+          "answer",
+          "customerId",
+          "feedbackQuestionId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "feedbackQuestionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "feedbackQuestion": {
+            "$ref": "#/components/schemas/FeedbackQuestion"
+          },
+          "answer": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeedbackAnswerType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "FeedbackQuestion": {
+        "required": [
+          "answerType",
+          "question"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "question": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "answerType": {
+            "$ref": "#/components/schemas/FeedbackAnswerType"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "customerFeedbacks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerFeedback"
+            },
             "nullable": true
           }
         },
@@ -497,9 +957,62 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "status": {
             "type": "string",
-            "format": "date-time"
+            "nullable": true
+          },
+          "remarks": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanOfficer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "applicationUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/ApplicationUser"
+          },
+          "region": {
+            "type": "string",
+            "nullable": true
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedLoanRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanRequest"
+            },
+            "nullable": true
+          },
+          "assignedBackgroundVerifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BackgroundVerification"
+            },
+            "nullable": true
+          },
+          "assignedLoanVerifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanVerification"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -566,11 +1079,19 @@
           "loanRequest": {
             "$ref": "#/components/schemas/LoanRequest"
           },
-          "details": {
+          "assignedOfficerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "assignedOfficer": {
+            "$ref": "#/components/schemas/LoanOfficer"
+          },
+          "status": {
             "type": "string",
             "nullable": true
           },
-          "status": {
+          "remarks": {
             "type": "string",
             "nullable": true
           }
@@ -620,6 +1141,15 @@
           }
         },
         "additionalProperties": false
+      },
+      "VerificationStatus": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
       }
     }
   }
