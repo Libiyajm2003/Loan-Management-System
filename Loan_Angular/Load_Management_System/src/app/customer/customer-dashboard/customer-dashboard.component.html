@@ -1,0 +1,23 @@
+<div class="customer-dashboard">
+  <h2>Customer Dashboard</h2>
+  <button (click)="logout()">Logout</button>
+
+  <h3>Apply for Loan</h3>
+  <form (ngSubmit)="applyLoan()">
+    <label>Amount</label>
+    <input type="number" [(ngModel)]="model.amount" name="amount" required />
+
+    <label>Tenure (months)</label>
+    <input type="number" [(ngModel)]="model.tenureMonths" name="tenure" required />
+
+    <label>Purpose</label>
+    <input type="text" [(ngModel)]="model.purpose" name="purpose" required />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+</div>
+
+
